@@ -6,8 +6,9 @@
 // Brief : Assignment 1.1
 //=====================...........................=================================
 
+int divide(const int num, const int den);
+
 #include <iostream>
-#include "divide.h"
 int main(void) {
     int a = 7;
     int b = 3;
