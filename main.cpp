@@ -7,11 +7,7 @@
 //=====================...........................=================================
 
 #include <iostream>
-#include "divide.h"
 int main(void) {
-    int a = 7;
-    int b = 3;
-    int c = divide(a, b);
-    std :: cout << a << "/" << b << "=" << c << std::endl;
+    // Code goes here
     return 0;
 }
