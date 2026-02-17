@@ -9,8 +9,10 @@
 #include <iostream>
 #include <array>
 #include <string>
+#include <algorithm>
 
 const int mazeSize = 12;
+std::array<std::array<char, mazeSize>, mazeSize> maze;
 
 std::array<char, mazeSize> removeSpaces(std::string str)
 {
@@ -24,6 +26,16 @@ std::array<char, mazeSize> removeSpaces(std::string str)
 
     return arr;
 }
+
+std::pair<int, int> GetTheXPosition() {
+    for (int i = 0; i < mazeSize; i++) {
+        for (int j = 0; j < mazeSize; j++) {
+            if (maze[i][j] == 'x')
+                return std::pair<int, int>(i, j);
+        }
+    }
+}
+
 
 int main(void) {
     // Code goes here
@@ -52,7 +64,9 @@ int main(void) {
         std::cout << std::endl;
     }
 
-    
+    std::pair<int, int> positionOfTheX = GetTheXPosition();
+
+    std::cout << positionOfTheX.first << ", " << positionOfTheX.second << std::endl;
 
     return 0;
 }
