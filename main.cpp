@@ -10,9 +10,11 @@
 #include <array>
 #include <string>
 #include <algorithm>
+#include <tuple>
 
 const int mazeSize = 12;
 std::array<std::array<char, mazeSize>, mazeSize> maze;
+
 
 std::array<char, mazeSize> removeSpaces(std::string str)
 {
@@ -27,11 +29,13 @@ std::array<char, mazeSize> removeSpaces(std::string str)
     return arr;
 }
 
-std::pair<int, int> GetTheXPosition() {
+std::tuple<int, int> GetTheXPosition() {
     for (int i = 0; i < mazeSize; i++) {
         for (int j = 0; j < mazeSize; j++) {
-            if (maze[i][j] == 'x')
-                return std::pair<int, int>(i, j);
+            if (maze[i][j] == 'x') {
+                std::tuple<int, int> pairino(i, j);
+                return pairino;
+            }
         }
     }
 }
@@ -42,7 +46,7 @@ int main(void) {
 
     
 
-    std::array<std::array<char, mazeSize>, mazeSize> maze = {
+    maze = {
         removeSpaces("# # # # # # # # # # # #"),
         removeSpaces("# . . . # . . . . . . #"),
         removeSpaces(". . # . # . # # # # . #"),
@@ -64,9 +68,9 @@ int main(void) {
         std::cout << std::endl;
     }
 
-    std::pair<int, int> positionOfTheX = GetTheXPosition();
+    std::tuple<int, int> positionOfTheX = GetTheXPosition();
 
-    std::cout << positionOfTheX.first << ", " << positionOfTheX.second << std::endl;
+    std::cout << get<0>(positionOfTheX) << ", " << get<1>(positionOfTheX) << std::endl;
 
     return 0;
 }
