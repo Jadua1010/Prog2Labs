@@ -40,6 +40,16 @@ std::tuple<int, int> GetTheXPosition() {
     }
 }
 
+//Separate print maze function
+int printmaz(void) {
+    for (int i = 0; i < mazeSize; i++) {
+        for (int j = 0; j < mazeSize; j++) {
+            std::cout << maze[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 
 int main(void) {
     // Code goes here
@@ -61,16 +71,13 @@ int main(void) {
         removeSpaces("# # # # # # # # # # # #")
     };
 
-    for (int i = 0; i < mazeSize; i++) {
-        for (int j = 0; j < mazeSize; j++) {
-            std::cout << maze[i][j];
-        }
-        std::cout << std::endl;
-    }
+    printmaz();
 
     std::tuple<int, int> positionOfTheX = GetTheXPosition();
 
     std::cout << get<0>(positionOfTheX) << ", " << get<1>(positionOfTheX) << std::endl;
+
+
 
     return 0;
 }
