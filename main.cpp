@@ -3,7 +3,7 @@
 // Group : 8
 // License : LGPL open source license
 //
-// Brief : Assignment 1.1
+// Brief : Assignment 2
 //=====================...........................=================================
 
 #include <iostream>
@@ -14,6 +14,13 @@
 
 const int mazeSize = 12;
 std::array<std::array<char, mazeSize>, mazeSize> maze;
+
+enum Direction {
+    LEFT,
+    UP,
+    RIGHT,
+    DOWN
+};
 
 
 std::array<char, mazeSize> removeSpaces(std::string str)
@@ -51,7 +58,8 @@ int printmaz(void) {
 }
 
 int solve() {
-    for
+
+    return 0;
 }
 
 int main(void) {
