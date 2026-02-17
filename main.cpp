@@ -50,11 +50,12 @@ int printmaz(void) {
     }
 }
 
+int solve() {
+    for
+}
 
 int main(void) {
     // Code goes here
-
-    
 
     maze = {
         removeSpaces("# # # # # # # # # # # #"),
