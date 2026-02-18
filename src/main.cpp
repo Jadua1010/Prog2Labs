@@ -30,13 +30,19 @@ enum Direction {
 // Move left initially
 Direction CurrentDirection = LEFT;
 
-// Function to enable easy input of the maze
+// Function to enable easy input and attempt to fix some broken mazes
 std::array<char, mazeSize> removeSpaces(std::string str) {
-    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    // Remove all spaces
+    str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
 
-    std::array<char, mazeSize> arr = {};
+    std::array<char, mazeSize> arr{};
 
-    for (int i = 0; i < mazeSize; i++) {
+    // Start by filling with wall elements
+    arr.fill('#');
+
+    // Now cast all elements from the string into the array
+    size_t len = std::min(str.size(), static_cast<size_t>(mazeSize));
+    for (size_t i = 0; i < len; ++i) {
         arr[i] = str[i];
     }
 
@@ -96,7 +102,6 @@ bool CheckPosition(Direction direction) {
             break;
 
     }
-    // This should never be returned unless the maze is broken
     return 0;
 }
 
@@ -262,6 +267,12 @@ int main(void) {
             std::cout << "unsolvable maze detected" << std::endl;
             break;
         }
+    }
+
+    // Check if the program was able to move an x
+    if (steps == 1) {
+        std::cout << "No x detected in the maze" << std::endl;
+        return 0;
     }
 
     // The maze is finished
