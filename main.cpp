@@ -9,15 +9,16 @@
 #include <iostream>
 #include <array>
 #include <string>
-#include <algorithm>
 #include <tuple>
 #include <chrono>
 #include <thread>
 
-
+// In this case we use a square 12x12 maze defined globally
 const int mazeSize = 12;
 std::array<std::array<char, mazeSize>, mazeSize> maze;
+std::tuple<int, int> CurrentPosition;
 
+// Setup ENUM for all 4 possible directions
 enum Direction {
     LEFT,
     UP,
@@ -25,12 +26,11 @@ enum Direction {
     DOWN
 };
 
+// Move left initially
 Direction CurrentDirection = LEFT;
-std::tuple<int, int> CurrentPosition;
 
-
-std::array<char, mazeSize> removeSpaces(std::string str)
-{
+// Function to enable easy input of the maze
+std::array<char, mazeSize> removeSpaces(std::string str) {
     str.erase(remove(str.begin(), str.end(), ' '), str.end());
 
     std::array<char, mazeSize> arr = {};
@@ -42,7 +42,10 @@ std::array<char, mazeSize> removeSpaces(std::string str)
     return arr;
 }
 
+// Function to find the position of the x
 std::tuple<int, int> GetTheXPosition() {
+
+    // Check each column and each row
     for (int i = 0; i < mazeSize; i++) {
         for (int j = 0; j < mazeSize; j++) {
             if (maze[i][j] == 'x') {
@@ -53,7 +56,7 @@ std::tuple<int, int> GetTheXPosition() {
     }
 }
 
-//Separate print maze function
+// Separate print maze function, makes it easy to call a lot of times
 int printmaz(void) {
     for (int i = 0; i < mazeSize; i++) {
         for (int j = 0; j < mazeSize; j++) {
@@ -65,6 +68,7 @@ int printmaz(void) {
     return 0;
 }
 
+// Function to check position in terms of where X is and the direction it wants to go
 bool CheckPosition(Direction direction) {
     char theChar = 'q';
     switch (direction) {
@@ -90,14 +94,15 @@ bool CheckPosition(Direction direction) {
             break;
 
     }
+    // This should never be returned unless the maze is broken
     return 0;
 }
 
-
+// Function to transverse maze based on priority, first turn left, check forward, turn right, turn around
 bool traverseMaze() {
 
     switch (CurrentDirection) {
-        case (LEFT): 
+        case (LEFT):
             if (CheckPosition(UP)) {
                 get<0>(CurrentPosition) = get<0>(CurrentPosition) - 1;
                 maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
@@ -208,8 +213,10 @@ bool traverseMaze() {
 
     }
 
+    // Print the maze as it currently is
     printmaz();
 
+    // Check if we are at the final position (column 0)
     if (get<0>(CurrentPosition) == 0 || get<0>(CurrentPosition) == mazeSize - 1 || get<1>(CurrentPosition) == 0 || get<1>(CurrentPosition) == mazeSize - 1)
         return 1;
 
@@ -217,7 +224,7 @@ bool traverseMaze() {
 }
 
 int main(void) {
-    // Code goes here
+    // Maze has input here
 
     maze = {
         removeSpaces("# # # # # # # # # # # #"),
@@ -234,10 +241,11 @@ int main(void) {
         removeSpaces("# # # # # # # # # # # #")
     };
 
+    //Intial printmaze
     printmaz();
 
+    // Setup position
     CurrentPosition = GetTheXPosition();
-
     bool isFinished = false;
 
     while (!isFinished) {
@@ -246,6 +254,7 @@ int main(void) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
+    // The maze is finished
     std::cout << "that the maze is solved and exit the program." << std::endl;
 
     return 0;
