@@ -213,7 +213,9 @@ bool traverseMaze() {
     return 0;
 }
 
-int RunProgram() {
+int RunProgram(std::array<std::array<char, mazeSize>, mazeSize> _maze) {
+    maze = _maze;
+
     //Intial printmaze
     printmaz();
 
@@ -249,7 +251,8 @@ int RunProgram() {
 
 
 int main(void) {
-    // Maze has input here for different tests
+    // Maze has input here
+
     TestScript();
 
     return 0;

@@ -4,6 +4,4 @@
 
 const int mazeSize = 12;
 
-extern std::array<std::array<char, mazeSize>, mazeSize> maze;
-
-int RunProgram();	
+int RunProgram(std::array<std::array<char, mazeSize>, mazeSize> _maze);	

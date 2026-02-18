@@ -10,6 +10,9 @@
 #include "main.h"
 
 
+// In this case we use a square 12x12 maze defined globally
+std::array<std::array<char, mazeSize>, mazeSize> maze;
+
 
 // Function to enable easy input and attempt to fix some broken mazes
 std::array<char, mazeSize> removeSpaces(std::string str) {
@@ -49,7 +52,7 @@ int TestScript() {
             removeSpaces("# # # # # # # # # # # #")
     };
 
-    int result1 = RunProgram();
+    RunProgram(maze);
 
     // Testing an unsolvable maze
     maze = {
@@ -67,8 +70,6 @@ int TestScript() {
             removeSpaces("# # # # # # # # # # # #")
     };
 
-    int result2 = RunProgram();
-
     // Testing without an X
     maze = {
             removeSpaces("# # # # # # # # # # # #"),
@@ -84,8 +85,6 @@ int TestScript() {
             removeSpaces("# . . . . . . . . . . #"),
             removeSpaces("# # # # # # # # # # # #")
     };
-
-    int result3 = RunProgram();
 
     // Testing with elements missing
     maze = {
@@ -103,10 +102,6 @@ int TestScript() {
             removeSpaces("# # # # # # # # # # # #")
     };
 
-    int result4 = RunProgram();
-
-
-    std::cout << "Results of the mazes are: " << (result1 ? "First one is a succes " : "first one failed ") << (result2 ? "second one is a succes " : "second one failed ") << (result3 ? "third one is a succes " : "third one failed ") << (result4 ? "fourth one is a succes " : "fourth one failed ") << std::endl;
 
     return 0;
 }
