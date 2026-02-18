@@ -13,7 +13,6 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
-#include "test.h"
 
 // In this case we use a square 12x12 maze defined globally
 const int mazeSize = 12;
@@ -31,6 +30,24 @@ enum Direction {
 // Move left initially
 Direction CurrentDirection = LEFT;
 
+// Function to enable easy input and attempt to fix some broken mazes
+std::array<char, mazeSize> removeSpaces(std::string str) {
+    // Remove all spaces
+    str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+
+    std::array<char, mazeSize> arr{};
+
+    // Start by filling with wall elements
+    arr.fill('#');
+
+    // Now cast all elements from the string into the array
+    size_t len = std::min(str.size(), static_cast<size_t>(mazeSize));
+    for (size_t i = 0; i < len; ++i) {
+        arr[i] = str[i];
+    }
+
+    return arr;
+}
 
 // Function to find the position of the x
 std::tuple<int, int> GetTheXPosition() {
@@ -213,8 +230,23 @@ bool traverseMaze() {
     return 0;
 }
 
-int RunProgram(std::array<std::array<char, mazeSize>, mazeSize> _maze) {
-    maze = _maze;
+int main(void) {
+    // Maze has input here
+
+    maze = {
+        removeSpaces("# # # # # # # # # # # #"),
+        removeSpaces("# . . . # . . . . . . #"),
+        removeSpaces(". . # . # . # # # # . #"),
+        removeSpaces("# # # . # . . . . # . #"),
+        removeSpaces("# . . . . # # # . # . x"),
+        removeSpaces("# # # # . # . # . # . #"),
+        removeSpaces("# . . # . # . # . # . #"),
+        removeSpaces("# # . # . # . # . # . #"),
+        removeSpaces("# . . . . . . . . # . #"),
+        removeSpaces("# # # # # # . # # # . #"),
+        removeSpaces("# . . . . . . . . . . #"),
+        removeSpaces("# # # # # # # # # # # #")
+    };
 
     //Intial printmaze
     printmaz();
@@ -245,15 +277,6 @@ int RunProgram(std::array<std::array<char, mazeSize>, mazeSize> _maze) {
 
     // The maze is finished
     std::cout << "after " << steps << " steps, the maze is solved and exit the program." << std::endl;
-
-    return 1;
-}
-
-
-int main(void) {
-    // Maze has input here
-
-    TestScript();
 
     return 0;
 }
