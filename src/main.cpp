@@ -12,6 +12,7 @@
 #include <tuple>
 #include <chrono>
 #include <thread>
+#include <algorithm>
 
 // In this case we use a square 12x12 maze defined globally
 const int mazeSize = 12;
@@ -54,6 +55,7 @@ std::tuple<int, int> GetTheXPosition() {
             }
         }
     }
+    return {-1, -1};
 }
 
 // Separate print maze function, makes it easy to call a lot of times
@@ -73,22 +75,22 @@ bool CheckPosition(Direction direction) {
     char theChar = 'q';
     switch (direction) {
         case (UP):
-            theChar = maze[get<0>(CurrentPosition) - 1][get<1>(CurrentPosition)];
+            theChar = maze[std::get<0>(CurrentPosition) - 1][std::get<1>(CurrentPosition)];
             if (theChar == 'x' || theChar == '.')
                 return 1;
             break;
         case (DOWN):
-            theChar = maze[get<0>(CurrentPosition) + 1][get<1>(CurrentPosition)];
+            theChar = maze[std::get<0>(CurrentPosition) + 1][std::get<1>(CurrentPosition)];
             if (theChar == 'x' || theChar == '.')
                 return 1;
             break;
         case (LEFT):
-            theChar = maze[get<0>(CurrentPosition)][get<1>(CurrentPosition) - 1];
+            theChar = maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition) - 1];
             if (theChar == 'x' || theChar == '.')
                 return 1;
             break;
         case (RIGHT):
-            theChar = maze[get<0>(CurrentPosition)][get<1>(CurrentPosition) + 1];
+            theChar = maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition) + 1];
             if (theChar == 'x' || theChar == '.')
                 return 1;
             break;
@@ -104,107 +106,107 @@ bool traverseMaze() {
     switch (CurrentDirection) {
         case (LEFT):
             if (CheckPosition(UP)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = UP;
             }
             else if (CheckPosition(LEFT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = LEFT;
             }
             else if (CheckPosition(DOWN)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = DOWN;
             }
             else {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = RIGHT;
             }
             break;
 
-        case (UP): 
+        case (UP):
             if (CheckPosition(RIGHT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = RIGHT;
             }
             else if (CheckPosition(UP)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = UP;
             }
             else if (CheckPosition(LEFT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = LEFT;
             }
             else {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = DOWN;
             }
             break;
 
-        case (RIGHT): 
+        case (RIGHT):
             if (CheckPosition(DOWN)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = DOWN;
             }
             else if (CheckPosition(RIGHT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = RIGHT;
             }
             else if (CheckPosition(UP)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = UP;
             }
             else {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = LEFT;
             }
             break;
 
-        case (DOWN): 
+        case (DOWN):
             if (CheckPosition(LEFT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = LEFT;
             }
             else if (CheckPosition(DOWN)) {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = DOWN;
             }
             else if (CheckPosition(RIGHT)) {
-                get<1>(CurrentPosition) = get<1>(CurrentPosition) + 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<1>(CurrentPosition) = std::get<1>(CurrentPosition) + 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = RIGHT;
             }
             else {
-                get<0>(CurrentPosition) = get<0>(CurrentPosition) - 1;
-                maze[get<0>(CurrentPosition)][get<1>(CurrentPosition)] = 'x';
+                std::get<0>(CurrentPosition) = std::get<0>(CurrentPosition) - 1;
+                maze[std::get<0>(CurrentPosition)][std::get<1>(CurrentPosition)] = 'x';
 
                 CurrentDirection = UP;
             }
@@ -217,7 +219,7 @@ bool traverseMaze() {
     printmaz();
 
     // Check if we are at the final position (column 0)
-    if (get<0>(CurrentPosition) == 0 || get<0>(CurrentPosition) == mazeSize - 1 || get<1>(CurrentPosition) == 0 || get<1>(CurrentPosition) == mazeSize - 1)
+    if (std::get<0>(CurrentPosition) == 0 || std::get<0>(CurrentPosition) == mazeSize - 1 || std::get<1>(CurrentPosition) == 0 || std::get<1>(CurrentPosition) == mazeSize - 1)
         return 1;
 
     return 0;
