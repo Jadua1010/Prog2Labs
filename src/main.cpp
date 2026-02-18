@@ -249,15 +249,23 @@ int main(void) {
     // Setup position
     CurrentPosition = GetTheXPosition();
     bool isFinished = false;
+    int steps = 0;
+    int sleepTime = 50;
 
     while (!isFinished) {
         isFinished = traverseMaze();
+        steps++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // Prevent infinite loop in broken mazes (~8 mins of solving at 50ms sleep)
+        if (steps > 10000) {
+            std::cout << "unsolvable maze detected" << std::endl;
+            break;
+        }
     }
 
     // The maze is finished
-    std::cout << "that the maze is solved and exit the program." << std::endl;
+    std::cout << "after " << steps << " steps, the maze is solved and exit the program." << std::endl;
 
     return 0;
 }
