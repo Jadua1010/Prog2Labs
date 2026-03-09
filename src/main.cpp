@@ -3,7 +3,7 @@
 // Group : 8
 // License : LGPL open source license
 //
-// Brief : Assignment x
+// Brief : Assignment 4.1
 //=====================...........................=================================
 
 #include <iostream>
