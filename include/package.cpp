@@ -10,7 +10,7 @@ Package::Package(std::string senderName, std::string receiverName, Address sende
     receiverName(receiverName),
     senderAddress(senderAddress),
     receiverAddress(receiverAddress),
-    weight()
+    weight(weight)
 {
 }
 

@@ -10,7 +10,7 @@
 
 class Package
 {
-// Use protected because we want these values to be accessible in derrived classes
+// Use protected because we want these values to be accessible in derrived classes but NOT anywhere else
 protected:
     std::string senderName;
     std::string receiverName;
@@ -26,6 +26,7 @@ public:
     // Make virtual, we want polymorphism
     double calculateCost() const;
     virtual double additionalCost() const;
+    std::string getInfo() const {return senderName + " -> " + receiverName;};
 };
 
 

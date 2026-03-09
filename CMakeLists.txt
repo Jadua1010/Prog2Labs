@@ -3,13 +3,11 @@ project(Lab1)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include_directories(include)
+
 add_executable(Lab1 src/main.cpp
-        include/package.cpp
-        include/package.h
-        include/twoDayPackage.cpp
-        include/twoDayPackage.h
-        include/overnightPackage.cpp
-        include/overnightPackage.h
         include/address.cpp
-        include/address.h
+        include/package.cpp
+        include/twoDayPackage.cpp
+        include/overnightPackage.cpp
 )

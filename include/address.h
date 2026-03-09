@@ -11,13 +11,12 @@ class Address
 {
     // Basic address with
     private:
-        std::string buildingNumber;
         std::string street;
         std::string city;
         std::string postcode;
         std::string country;
     public:
-        Address(std::string buildingNumber, std::string street, std::string city, std::string postcode, std::string country);
+        Address(std::string street, std::string city, std::string postcode, std::string country);
 
     std::string toString() const;
 

@@ -4,9 +4,8 @@
 
 #include "address.h"
 
-Address::Address(std::string n, std::string s, std::string c, std::string p, std::string co)
+Address::Address(std::string s, std::string c, std::string p, std::string co)
 {
-    buildingNumber = n;
     street = s;
     city = c;
     postcode = p;
@@ -15,5 +14,5 @@ Address::Address(std::string n, std::string s, std::string c, std::string p, std
 
 std::string Address::toString() const
 {
-    return buildingNumber + " " + street + ", " + city + ", " + postcode + ", " + country;
+    return street + ", " + city + ", " + postcode + ", " + country;
 }
