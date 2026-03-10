@@ -1,8 +1,18 @@
+//=====================...........................=================================
+// Authors : Wessel Vis & Josh Ben-Nathan
+// Group : 8
+// License : LGPL open source license
 //
-// Created by josh on 3/9/26.
+// Brief : Assignment 4.1
+//=====================...........................=================================
+// Authors : Wessel Vis & Josh Ben-Nathan
+// Group : 8
+// License : LGPL open source license
 //
+// Brief : Assignment 4.1
+//=====================...........................=================================
 
-#include "package.h"
+#include "../include/package.h"
 
 Package::Package(std::string senderName, std::string receiverName, Address senderAddress, Address receiverAddress, double weight)
     :

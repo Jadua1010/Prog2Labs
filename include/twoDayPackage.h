@@ -1,6 +1,10 @@
+//=====================...........................=================================
+// Authors : Wessel Vis & Josh Ben-Nathan
+// Group : 8
+// License : LGPL open source license
 //
-// Created by josh on 3/9/26.
-//
+// Brief : Assignment 4.1
+//=====================...........................=================================
 
 #ifndef LAB1_TWODAYPACKAGE_H
 #define LAB1_TWODAYPACKAGE_H
