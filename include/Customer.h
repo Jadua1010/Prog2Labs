@@ -6,17 +6,21 @@
 // Brief : Assignment 4.2
 //=====================...........................=================================
 
+#ifndef LAB1_CUSTOMER_H
+#define LAB1_CUSTOMER_H
+
 #include "address.h"
 
-Address::Address(std::string s, std::string c, std::string p, std::string co)
+class Customer
 {
-    street = s;
-    city = c;
-    postcode = p;
-    country = co;
-}
+// Use protected because we want these values to be accessible in derrived classes but NOT anywhere else
+protected:
+	Address address;
+public:
+	Customer(Address address);
 
-std::string Address::toString() const
-{
-    return street + ", " + city + ", " + postcode + ", " + country;
-}
+	virtual void printCustomerInfo();
+};
+
+
+#endif //LAB1_CUSTOMER_H

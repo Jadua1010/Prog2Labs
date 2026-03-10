@@ -7,16 +7,14 @@
 //=====================...........................=================================
 
 #include "address.h"
+#include "Customer.h"
+#include <string>
 
-Address::Address(std::string s, std::string c, std::string p, std::string co)
-{
-    street = s;
-    city = c;
-    postcode = p;
-    country = co;
-}
+PrivateCustomer::PrivateCustomer(Address _address, std::string _name) :
+    Customer(_address)
+    , name(_name)
+{}
 
-std::string Address::toString() const
-{
-    return street + ", " + city + ", " + postcode + ", " + country;
+void PrivateCustomer::printCustomerInfo() override {
+	std::cout << this->address << "\t" << this->name << std::endl;
 }

@@ -6,17 +6,16 @@
 // Brief : Assignment 4.2
 //=====================...........................=================================
 
-#include "address.h"
+#include "Customer.h"
+#include <string>
 
-Address::Address(std::string s, std::string c, std::string p, std::string co)
+
+Customer::Customer(Address _address) :
+	address(_address)
 {
-    street = s;
-    city = c;
-    postcode = p;
-    country = co;
+
 }
 
-std::string Address::toString() const
-{
-    return street + ", " + city + ", " + postcode + ", " + country;
+virtual void Customer::printCustomerInfo()  {
+	std::cout << this->address;
 }

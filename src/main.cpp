@@ -3,7 +3,7 @@
 // Group : 8
 // License : LGPL open source license
 //
-// Brief : Assignment 4.1
+// Brief : Assignment 4.2
 //=====================...........................=================================
 
 #include <iostream>
@@ -13,7 +13,68 @@
 #include "overnightPackage.h"
 
 
+
 int main(void) {
+
+    // Create some hardcoded customers
+/*    std::vector<Customer*> customers;
+
+
+    // Add at least 3 customers of each type to the array
+    // Format is address, name for private customers
+
+    customers.push_back(
+        new PrivateCustomer(
+            Address("1 Pie Street", "Enschede", "1000AB", "NL")
+            , "John Doe"
+        )
+    );
+
+    
+    customers.push_back(
+        new PrivateCustomer(
+            Address("3 Sea Street", "Zaanstad", "2000CD", "NL")
+            , "Sam Smith"
+        )
+    );
+    customers.push_back(
+        new PrivateCustomer(
+            Address("8 Oui Street", "Paris", "45685", "FR")
+            , "Johan Warm"
+        )
+    );
+
+    // Format is address, companyName, contactName, ContactEmail for business customers
+
+
+    customers.push_back(
+        new BusinessCustomer(
+            Address("6 Beans Street", "Breda", "4000EF", "NL")
+            , "Bean Bakers"
+            , "Bart Bakker"
+            , "bart@beanbakers.nl"
+            )
+    );
+
+    customers.push_back(
+        new BusinessCustomer(
+            Address("7 Bacon Street", "Rotterdam", "3000GD", "NL")
+            , "Beaconator"
+            , "Fred flok"
+            , "fredflok@beaconator.nl"
+            )
+    );
+
+    customers.push_back(
+        new BusinessCustomer(
+            Address("9 Nein Street", "Berlin", "14199", "NL")
+            , "Worst und peach"
+            , "Liebe Luiten"
+            , "lluiten@worstundpeach.de"
+            )
+    );*/
+
+
     // Create some harcoded packages
 
     std::vector<Package*> packages;
