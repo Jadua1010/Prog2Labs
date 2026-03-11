@@ -81,7 +81,7 @@ int main(void) {
 
     std::vector<Package*> packages;
 
-    try{
+    try {
 
     // Add 3 packages to the array
     // Format is sender name, reciever name, sender addr, reciever addr, weight
@@ -89,14 +89,14 @@ int main(void) {
     packages.push_back(
         new TwoDayPackage(
             customers.at(0),
-            customers.at(2),
+            customers.at(0),
             6.0
             )
         );
 
     packages.push_back(
         new OvernightPackage(
-            customers.at(2),
+            customers.at(4),
             customers.at(3),
             7.0
             )
@@ -110,7 +110,10 @@ int main(void) {
         )
     );
 
-    catch (std::exception& e) {
+
+    }
+
+    catch (std::exception& e){
         std::cout << "Invalid assignment of customers to packages: " << e.what() << std::endl;
 
         // delete everything

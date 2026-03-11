@@ -11,6 +11,8 @@ Package::Package(Customer* _sender, Customer* _receiver, double weight)
     receiver(_receiver),
     weight(weight)
 {
+    if (_sender == _receiver)
+        throw std::invalid_argument("Sender and receiver cant be the same");
 }
 
 double Package::calculateCost() const
