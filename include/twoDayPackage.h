@@ -13,6 +13,7 @@
 
 class TwoDayPackage : public Package
 {
+    // Public class that is of type package
     public:
     TwoDayPackage(std::string senderName, std::string receiverName, Address senderAddress, Address receiverAddress, double weight)
         : Package(senderName, receiverName, senderAddress, receiverAddress, weight) {}

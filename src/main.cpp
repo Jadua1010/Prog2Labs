@@ -12,7 +12,6 @@
 #include "twoDayPackage.h"
 #include "overnightPackage.h"
 
-
 int main(void) {
     // Create some harcoded packages
 
@@ -50,6 +49,7 @@ int main(void) {
         )
     );
 
+    // Now loop through all the packages in the array and print the information about it.
     for (auto pkg : packages)
     {
         std::cout << "Shipping cost for package "<< pkg->getInfo() << ": "<< pkg->calculateCost() << std::endl;

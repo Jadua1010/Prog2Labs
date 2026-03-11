@@ -1,5 +1,3 @@
-//
-// Created by josh on 3/9/26.
 //=====================...........................=================================
 // Authors : Wessel Vis & Josh Ben-Nathan
 // Group : 8
@@ -15,13 +13,14 @@
 
 class Address
 {
-    // Basic address with
+    // Basic address with basic information that could be found on a letter
     private:
         std::string street;
         std::string city;
         std::string postcode;
         std::string country;
     public:
+    // Define it publicly so that it can be accessed
         Address(std::string street, std::string city, std::string postcode, std::string country);
 
     std::string toString() const;

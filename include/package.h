@@ -3,11 +3,6 @@
 // Group : 8
 // License : LGPL open source license
 //
-//=====================...........................=================================
-// Authors : Wessel Vis & Josh Ben-Nathan
-// Group : 8
-// License : LGPL open source license
-//
 // Brief : Assignment 4.1
 //=====================...........................=================================
 
@@ -32,9 +27,12 @@ protected:
 public:
     Package(std::string senderName, std::string receiverName, Address senderAddress, Address receiverAddress, double weight);
 
-    // Make virtual, we want polymorphism
+    // The calculate cost for this package is constant at all times
     double calculateCost() const;
+    // Make virtual, we want polymorphism
     virtual double additionalCost() const;
+
+    // A simple getinfo function, for basic debugging purposes
     std::string getInfo() const {return senderName + " -> " + receiverName;};
 };
 

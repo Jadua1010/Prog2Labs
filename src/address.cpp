@@ -8,6 +8,7 @@
 
 #include "../include/address.h"
 
+// Setup address of type string
 Address::Address(std::string s, std::string c, std::string p, std::string co)
 {
     street = s;
@@ -18,5 +19,6 @@ Address::Address(std::string s, std::string c, std::string p, std::string co)
 
 std::string Address::toString() const
 {
+    // Function that returns the address as 1 string
     return street + ", " + city + ", " + postcode + ", " + country;
 }
