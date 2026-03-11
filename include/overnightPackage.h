@@ -14,8 +14,8 @@
 class OvernightPackage : public Package
 {
     public:
-    OvernightPackage(std::string senderName, std::string receiverName, Address senderAddress, Address receiverAddress, double weight)
-        : Package(senderName, receiverName, senderAddress, receiverAddress, weight) {}
+    OvernightPackage(Customer* sender, Customer* receiver, double weight)
+        : Package(sender, receiver, weight) {}
 
     double additionalCost() const override
     {

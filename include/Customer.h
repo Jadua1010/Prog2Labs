@@ -10,6 +10,8 @@
 #define LAB1_CUSTOMER_H
 
 #include "address.h"
+#include <iostream>
+#include <string>
 
 class Customer
 {
@@ -19,7 +21,15 @@ protected:
 public:
 	Customer(Address address);
 
-	virtual void printCustomerInfo();
+	// Basic print customer info function, which could be overridden by its children
+	virtual void printCustomerInfo() {
+		std::cout << this->address.toString() << std::endl;
+	}
+
+	// quite useless fucntion for just the customer, but children can fill in their name information
+	virtual std::string getName() const {
+		return "";
+	}
 };
 
 

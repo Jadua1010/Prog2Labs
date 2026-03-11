@@ -6,16 +6,13 @@
 // Brief : Assignment 4.2
 //=====================...........................=================================
 
+#include "PrivateCustomer.h"
+#include "address.h"
 #include "Customer.h"
 #include <string>
 
-
-Customer::Customer(Address _address) :
-	address(_address)
-{
-
-}
-
-virtual void Customer::printCustomerInfo()  {
-	std::cout << this->address;
-}
+// Initialize fuction
+PrivateCustomer::PrivateCustomer(Address _address, std::string _name) :
+    Customer(_address)
+    , name(_name)
+{}

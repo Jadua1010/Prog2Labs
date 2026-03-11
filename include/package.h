@@ -10,27 +10,45 @@
 #define LAB1_PACKAGE_H
 
 #include <string>
-#include "address.h"
+#include "customer.h"
+#include "BusinessCustomer.h"
+#include <vector>
 
 class Package
 {
 // Use protected because we want these values to be accessible in derrived classes but NOT anywhere else
 protected:
-    std::string senderName;
-    std::string receiverName;
-
-    Address senderAddress;
-    Address receiverAddress;
+    Customer* sender;
+    Customer* receiver;
 
     double weight;
 
 public:
-    Package(std::string senderName, std::string receiverName, Address senderAddress, Address receiverAddress, double weight);
+    Package(Customer* sender, Customer* receiver, double weight);
 
     // Make virtual, we want polymorphism
     double calculateCost() const;
     virtual double additionalCost() const;
-    std::string getInfo() const {return senderName + " -> " + receiverName;};
+    std::string getInfo() const {return sender->getName() + " -> " + receiver->getName(); };
+
+    std::tuple<std::vector<BusinessCustomer*>, std::vector<BusinessCustomer*>> printChristmasCardContactPersons(std::vector<BusinessCustomer*> possibleCustomers) {
+
+        // init new lists to keep track of the customers
+        std::vector<BusinessCustomer*> processCustomers;
+        std::vector<BusinessCustomer*> dontProcessCustomers;
+
+        // Loop though the customers and if they match, put them in the list for matching items, otherwise add them to the remainder list
+        for (BusinessCustomer* item : possibleCustomers) {
+
+            if (item == sender || item == receiver) {
+                processCustomers.push_back(item);
+            }
+            else
+                dontProcessCustomers.push_back(item);
+        }
+        // make a tuple to send the ordered customers back to main
+        return std::make_tuple(processCustomers, dontProcessCustomers);
+    }
 };
 
 

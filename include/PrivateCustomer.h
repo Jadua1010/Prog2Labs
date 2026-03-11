@@ -10,6 +10,7 @@
 #define LAB1_PRIVATECUSTOMER_H
 
 #include <string>
+#include <iostream>
 #include "Customer.h"
 
 class PrivateCustomer : public Customer
@@ -19,7 +20,15 @@ class PrivateCustomer : public Customer
     public:
         PrivateCustomer(Address _address, std::string _name);
 
-        void printCustomerInfo() override;
+        // override for additional customer information
+        void printCustomerInfo() override {
+            std::cout << this->address.toString() << "\t" << this->name << std::endl;
+        }
+
+        // Simple override for its name
+        std::string getName() const override {
+            return name;
+        }
 };
 
 #endif //LAB1_PRIVATECUSTOMER_H

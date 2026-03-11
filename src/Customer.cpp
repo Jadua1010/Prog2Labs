@@ -6,13 +6,13 @@
 // Brief : Assignment 4.2
 //=====================...........................=================================
 
-#include "BusinessCustomer.h"
-#include "address.h"
 #include "Customer.h"
+#include "address.h"
 
 
-
-void BusinessCustomer::printCustomerInfo() override {
-    std::cout << this->address << "\t" << this->companyName << "\t" << this->contactName << "\t" << this->contactEmail << std::endl;
+// Initialize function for customer
+Customer::Customer(Address _address) :
+	address(_address)
+{
 
 }

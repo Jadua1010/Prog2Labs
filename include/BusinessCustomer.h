@@ -11,6 +11,8 @@
 
 #include <string>
 #include "Customer.h"
+#include "address.h"
+#include <iostream>
 
 class BusinessCustomer : public Customer
 {
@@ -19,6 +21,7 @@ class BusinessCustomer : public Customer
         std::string contactName;
         std::string contactEmail;
     public:
+        // Initialize functionality
         BusinessCustomer(Address _address
             , std::string _companyName
             , std::string _contactName
@@ -29,7 +32,16 @@ class BusinessCustomer : public Customer
             , contactEmail(_contactEmail)
         {
         }
-        void printCustomerInfo() override;
+
+        // override for additional information
+        void printCustomerInfo() override {
+            std::cout << this->address.toString() << "\t" << this->companyName << "\t" << this->contactName << "\t" << this->contactEmail << std::endl;
+        }
+
+        // Override with the contact person name
+        std::string getName() const override  {
+            return contactName;
+        }
 };
 
 #endif //LAB1_BUSINESSCUSTOMER_H
