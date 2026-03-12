@@ -103,14 +103,14 @@ int main(void) {
         );
 
     packages.push_back(
-    new OvernightPackage(
-        customers.at(3),
-        customers.at(5),
-        8.0
-        )
-    );
+        new OvernightPackage(
+            customers.at(3),
+            customers.at(5),
+            8.0
+            )
+        );
 
-    catch (std::exception& e) {
+    } catch (std::exception& e) {
         std::cout << "Invalid assignment of customers to packages: " << e.what() << std::endl;
 
         // delete everything
