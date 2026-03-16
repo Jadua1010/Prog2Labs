@@ -6,12 +6,34 @@
 // Brief : Assignment 5.1
 //=====================...........................=================================
 
-#include "DrawContourScanning.h" 
+#include "DrawContourScanning.h"
 
 // draw contour
-void DrawContourScanning::drawContour(float threshold) {
+void DrawContourScanning::drawContour(float threshold)
+{
+    // Get x and y bounds
+    int minX = -ui->sizeX / 2;
+    int maxX =  ui->sizeX / 2;
+    int minY = -ui->sizeY / 2;
+    int maxY =  ui->sizeY / 2;
 
-    // YOUR CODE HERE
-
-    ui->drawPixel(0, 0); // Dummy code only
+    // Loop through all Y values left to right
+    for (int y = minY; y < maxY; y++)
+    {
+        // Set previous "above" location
+        bool prevAbove = (blob->potential(minX, y) > threshold);
+        // Loop through all X values again left to right
+        for (int x = minX + 1; x < maxX; x++)
+        {
+            // Set current "above" location
+            bool currentAbove = (blob->potential(x, y) > threshold);
+            if (currentAbove != prevAbove)
+            {
+                // draw that pixel
+                ui->drawPixel(x, y);
+            }
+            // Now update so we can loop agian
+            prevAbove = currentAbove;
+        }
+    }
 }

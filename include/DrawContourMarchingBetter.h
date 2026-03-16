@@ -1,10 +1,10 @@
-//==============================================================
-// Filename    : 
-// Authors     : 
-// Group       :
-// License     :  N.A. or opensource license like LGPL
-// Description : 
-//==============================================================
+//=====================...........................=================================
+// Authors : Wessel Vis & Josh Ben-Nathan
+// Group : 8
+// License : LGPL open source license
+//
+// Brief : Assignment 5.3
+//=====================...........................=================================
 
 // DrawContourMarchingBetter class derived from class
 // DrawContour.
