@@ -22,6 +22,8 @@ public:
 
     // draw contour
     virtual void drawContour(float threshold);
+    // threaded contour with starts and ends
+    virtual void drawThreadedContour(float threshold, int startY, int endY);
 }; // end class DrawContourScanningThreaded
 
 #endif
