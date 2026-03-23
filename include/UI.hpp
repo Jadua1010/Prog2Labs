@@ -42,10 +42,13 @@ class UI
     ///
     /// \param score score
     void setScore(int score);
+    void addScore(int score);
 
     /// Setter for the lives.
     /// @param lives lives
     void setLives(int lives);
+
+    void setMap(std::vector<std::vector<int>> newMap);
 
     /// Update the screen
     /// - Draw the background

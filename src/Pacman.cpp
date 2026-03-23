@@ -3,11 +3,13 @@
 #include "pacman.h"
 #include "GameObjectStruct.hpp"
 #include <vector>
+#include "UI.hpp"
 #include <iostream>
 
 // Initialize function for PACMAN
-Pacman::Pacman(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map) :
-	map(_map)
+Pacman::Pacman(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map, UI* _ui) :
+	map(_map),
+	 ui(_ui)
 {
 	this->x = _x;
 	this->y = _y;
@@ -92,6 +94,25 @@ void Pacman::Move() {
 
 	if (nexTile == WALL_TILE)
 		return; // WALL, so dont move into it
+
+	if (nexTile == SNACK_TILE) {
+        std::cout << "Snack" << std::endl;
+		// Calculate the actual tile position first
+		int nx = x;
+		int ny = y;
+		switch (dir) {
+			case LEFT:  nx--; break;
+			case RIGHT: nx++; break;
+			case UP:    ny--; break;
+			case DOWN:  ny++; break;
+		}
+		// Handle tunnel wrap (important!)
+		if (nx < 0) nx = map->begin()->size() - 1;
+		if (nx >= (int)map->begin()->size()) nx = 0;
+		ui->addScore(1);
+		(*map)[ny][nx] = 3;           // ← remove dot
+		ui->setMap(*map);
+	}
 
 	// Moving Pacman is dependend on its direction
 	switch (this->dir) {

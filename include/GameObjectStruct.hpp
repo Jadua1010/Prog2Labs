@@ -37,8 +37,10 @@ enum Type {
 };
 
 enum TileType {
-    PATH_TILE,
+    SNACK_TILE,
     WALL_TILE,
+    BIG_SNACK_TILE,
+    PATH_TILE,
     MAP_EDGE,
 };
 

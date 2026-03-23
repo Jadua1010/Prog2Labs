@@ -50,6 +50,10 @@ void UI::update(std::vector<GameObjectStruct> objects)
     SDL_RenderPresent(renderer);
 }
 
+void UI::setMap(std::vector<std::vector<int>> newMap) {
+    map = newMap;
+}
+
 void UI::drawScore()
 {
     int digitSelector = 1; // 1 selects 0, 10 selects 1, ...
@@ -84,6 +88,8 @@ void UI::drawLives()
 }
 
 void UI::setScore(int score) { this->score = score; }
+
+void UI::addScore(int points) { this->score += points; }
 
 void UI::setLives(int lives) { this->lives = lives; }
 
@@ -247,6 +253,18 @@ void UI::drawBackground(std::vector<std::vector<int>> &map)
                                 static_cast<int>(i) * TILESIZE, TILESIZE,
                                 TILESIZE};
                 SDL_RenderCopy(renderer, sheet, &clips[WALL][DOWN], &dst);
+            }
+            if (map[i][j] == 0) {
+                SDL_Rect dst = {static_cast<int>(j) * TILESIZE,
+                                static_cast<int>(i) * TILESIZE, TILESIZE,
+                                TILESIZE};
+                SDL_RenderCopy(renderer, sheet, &clips[DOT][DOWN], &dst);
+            }
+            if (map[i][j] == 2) {
+                SDL_Rect dst = {static_cast<int>(j) * TILESIZE,
+                                static_cast<int>(i) * TILESIZE, TILESIZE,
+                                TILESIZE};
+                SDL_RenderCopy(renderer, sheet, &clips[ENERGIZER][DOWN], &dst);
             }
         }
     }

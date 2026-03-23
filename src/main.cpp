@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "Pacman.h"
+#include <iostream>
 
 
 /// Callback function to update the game state.
@@ -38,12 +39,18 @@ int main(int /*argc*/, char ** /*argv*/)
     // Create a new ui object
     UI ui(map); // <-- use map from your game objects.
 
+    // Set the score
+    ui.setScore(0); // <-- Pass correct value to the setter
+
+    // Set the amount of lives
+    ui.setLives(3); // <-- Pass correct value to the setter
+
     // Init a Pacman
-    Pacman pacman = Pacman(1, 1, PACMAN, UP, &map);
+    Pacman pacman = Pacman(1, 1, PACMAN, UP, &map, &ui);
 
     // Start timer for game update, call this function every 100 ms. with pacman pointer
     SDL_TimerID timer_id =
-        SDL_AddTimer(100, gameUpdate, &pacman);
+        SDL_AddTimer(150, gameUpdate, &pacman);
 
 
     // Call game init code here
@@ -84,12 +91,6 @@ int main(int /*argc*/, char ** /*argv*/)
             }
         }
 
-        // Set the score
-        ui.setScore(12345); // <-- Pass correct value to the setter
-
-        // Set the amount of lives
-        ui.setLives(3); // <-- Pass correct value to the setter
-
         // Render the scene
         std::vector<GameObjectStruct> objects = {pacman};
         // ^-- Your code should provide this vector somehow (e.g.
@@ -98,6 +99,8 @@ int main(int /*argc*/, char ** /*argv*/)
 
         while (!SDL_TICKS_PASSED(SDL_GetTicks(), timeout)) {
             // ... do work until timeout has elapsed
+            //std::cout << "Tick" << std::endl;
+            ui.update(objects);
         }
     }
 
