@@ -5,6 +5,7 @@
 #ifndef SRC_GAMEOBJECTSTRUCT_H
 #define SRC_GAMEOBJECTSTRUCT_H
 
+
 /// These enum values denote the sprite sets available for items on screen.
 enum Type {
     PACMAN,
@@ -35,8 +36,14 @@ enum Type {
     NINE
 };
 
+enum TileType {
+    PATH_TILE,
+    WALL_TILE,
+    MAP_EDGE,
+};
+
 /// An enum to denote the direction of an item on screen.
-enum Direction { UP, DOWN, LEFT, RIGHT };
+enum Direction { UP, DOWN, LEFT, RIGHT, NONE = -1 };
 
 /// This represents an item that is drawn onto the screen.
 struct GameObjectStruct {

@@ -6,6 +6,8 @@
 #include "UI.hpp"
 #include <SDL2/SDL.h>
 #include <vector>
+#include "Pacman.h"
+
 
 /// Callback function to update the game state.
 ///
@@ -15,9 +17,14 @@
 /// should use mutexes to access shared data.
 /// Read the documentation of SDL_AddTimer for more information and for tips
 /// regarding multithreading issues.
-Uint32 gameUpdate(Uint32 interval, void * /*param*/)
+Uint32 gameUpdate(Uint32 interval, void* param)
 {
     // Do game loop update here
+
+    // Automatically set a step each gametick if its not a wall (and do at map edges)
+    Pacman* pacman = static_cast<Pacman*>(param);
+    pacman->Move();
+
     return interval;
 }
 
@@ -31,16 +38,13 @@ int main(int /*argc*/, char ** /*argv*/)
     // Create a new ui object
     UI ui(map); // <-- use map from your game objects.
 
-    // Start timer for game update, call this function every 100 ms.
-    SDL_TimerID timer_id =
-        SDL_AddTimer(100, gameUpdate, static_cast<void *>(nullptr));
+    // Init a Pacman
+    Pacman pacman = Pacman(1, 1, PACMAN, UP, &map);
 
-    // Example object, this can be removed later
-    GameObjectStruct pacman;
-    pacman.x = 1;
-    pacman.y = 1;
-    pacman.type = PACMAN;
-    pacman.dir = UP;
+    // Start timer for game update, call this function every 100 ms. with pacman pointer
+    SDL_TimerID timer_id =
+        SDL_AddTimer(100, gameUpdate, &pacman);
+
 
     // Call game init code here
 
@@ -58,16 +62,20 @@ int main(int /*argc*/, char ** /*argv*/)
                 quit = true;
             }
 
-            // All keydown events
+            // All keydown events. On movement keys, run the change movement function of pacman.
             if (e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym) {
-                case SDLK_LEFT: // YOUR CODE HERE
+                case SDLK_LEFT: 
+                    pacman.ChangeMovement(LEFT);
                     break;
-                case SDLK_RIGHT: // YOUR CODE HERE
+                case SDLK_RIGHT:
+                    pacman.ChangeMovement(RIGHT);
                     break;
-                case SDLK_UP: // YOUR CODE HERE
+                case SDLK_UP:
+                    pacman.ChangeMovement(UP);
                     break;
-                case SDLK_DOWN: // YOUR CODE HERE
+                case SDLK_DOWN:
+                    pacman.ChangeMovement(DOWN);
                     break;
                 case SDLK_ESCAPE:
                     quit = true;
