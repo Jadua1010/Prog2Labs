@@ -7,8 +7,12 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "Pacman.h"
+#include "Ghost.h"
 #include <iostream>
+#include <cmath>
+#include <random>
 
+std::vector<Ghost*> GhostPtrs;
 
 /// Callback function to update the game state.
 ///
@@ -26,15 +30,20 @@ Uint32 gameUpdate(Uint32 interval, void* param)
     Pacman* pacman = static_cast<Pacman*>(param);
     pacman->Move();
 
+    for (Ghost* ghost : GhostPtrs)
+        ghost->Move();
+
     return interval;
 }
 
 /// Program entry point.
-int main(int /*argc*/, char ** /*argv*/)
+int main(int /*argc*/, char** /*argv*/)
 {
-    std::vector<std::vector<int>> map = {{
+    std::srand(time(NULL));
+
+    std::vector<std::vector<int>> map = { {
         #include "board.def"
-    }};
+    } };
 
     // Create a new ui object
     UI ui(map); // <-- use map from your game objects.
@@ -46,9 +55,27 @@ int main(int /*argc*/, char ** /*argv*/)
     ui.setLives(3); // <-- Pass correct value to the setter
 
     // Init a Pacman
-    Pacman pacman = Pacman(1, 1, PACMAN, UP, &map, &ui);
+    Pacman pacman(1, 1, PACMAN, UP, &map, &ui);
 
-    // Start timer for game update, call this function every 100 ms. with pacman pointer
+    // Init the ghosts and get their positions relative to the map size
+    const int firstXPosition = floor(map.front().size() / 2.0) - 2;
+    const int ghostYPosition = floor(map.size() / 2.0);
+
+    Ghost inky(firstXPosition, ghostYPosition, INKY, RIGHT, &map, &ui);
+    Ghost pinky(firstXPosition + 1, ghostYPosition, PINKY, UP, &map, &ui);
+    Ghost blinky(firstXPosition + 2, ghostYPosition, BLINKY, UP, &map, &ui);
+    Ghost clyde(firstXPosition + 3, ghostYPosition, CLYDE, LEFT, &map, &ui);
+
+
+    // Fill in all the objects 
+
+    GhostPtrs.push_back(&inky);
+    GhostPtrs.push_back(&pinky);
+    GhostPtrs.push_back(&blinky);
+    GhostPtrs.push_back(&clyde);
+
+
+    // Start timer for game update, call this function every 150 ms. with the objects pointer
     SDL_TimerID timer_id =
         SDL_AddTimer(150, gameUpdate, &pacman);
 
@@ -72,7 +99,7 @@ int main(int /*argc*/, char ** /*argv*/)
             // All keydown events. On movement keys, run the change movement function of pacman.
             if (e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym) {
-                case SDLK_LEFT: 
+                case SDLK_LEFT:
                     pacman.ChangeMovement(LEFT);
                     break;
                 case SDLK_RIGHT:
@@ -92,8 +119,8 @@ int main(int /*argc*/, char ** /*argv*/)
         }
 
         // Render the scene
-        std::vector<GameObjectStruct> objects = {pacman};
-        // ^-- Your code should provide this vector somehow (e.g.
+        std::vector<GameObjectStruct> objects = { pacman, inky, pinky, blinky, clyde };
+
         // game->getStructs())
         ui.update(objects);
 
