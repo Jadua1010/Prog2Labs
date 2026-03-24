@@ -1,3 +1,6 @@
 /runAway.bat
 /app.exe
 /compileAndRun.bat
+out
+.vs
+CMakeLists.txt

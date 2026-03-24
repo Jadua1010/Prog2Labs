@@ -39,7 +39,7 @@ int Pacman::GetNextTile(Direction direction) {
 			value = map->at(y).at(x - 1);
 		break;
 	case RIGHT:
-		if (x == maxX)
+		if (x == maxX - 1)
 			value = MAP_EDGE;
 		else
 			value = map->at(y).at(x + 1);
@@ -51,7 +51,7 @@ int Pacman::GetNextTile(Direction direction) {
 			value = map->at(y - 1).at(x);
 		break;
 	case DOWN:
-		if (y == maxY)
+		if (y == maxY - 1)
 			value = MAP_EDGE;
 		else
 			value = map->at(y + 1).at(x);
@@ -95,30 +95,12 @@ void Pacman::Move() {
 	if (nexTile == WALL_TILE)
 		return; // WALL, so dont move into it
 
-	if (nexTile == SNACK_TILE) {
-        std::cout << "Snack" << std::endl;
-		// Calculate the actual tile position first
-		int nx = x;
-		int ny = y;
-		switch (dir) {
-			case LEFT:  nx--; break;
-			case RIGHT: nx++; break;
-			case UP:    ny--; break;
-			case DOWN:  ny++; break;
-		}
-		// Handle tunnel wrap (important!)
-		if (nx < 0) nx = map->begin()->size() - 1;
-		if (nx >= (int)map->begin()->size()) nx = 0;
-		ui->addScore(1);
-		(*map)[ny][nx] = 3;           // ← remove dot
-		ui->setMap(*map);
-	}
 
 	// Moving Pacman is dependend on its direction
 	switch (this->dir) {
 	case LEFT:
 		if (nexTile == MAP_EDGE) // These checks only have to be done at the x directions, since they only have teleporting options
-			x = maxX;
+			x = maxX - 1;
 		else
 			x--;
 		break;
@@ -135,6 +117,14 @@ void Pacman::Move() {
 		y++;
 		break;
 	}
+
+
+	if (map->at(y).at(x) == SNACK_TILE) {
+		ui->addScore(1);
+		(*map)[y][x] = PATH_TILE;           // ← remove dot
+		ui->setMap(*map);
+	}
+
 
 	// Try to rotate to the last failed rotation for easier movement
 	if (recentRotateAttempt != NONE) 
