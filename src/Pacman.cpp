@@ -1,15 +1,13 @@
 
 
-#include "pacman.h"
+#include "Pacman.h"
 #include "GameObjectStruct.hpp"
 #include <vector>
-#include "UI.hpp"
 #include <iostream>
 
 // Initialize function for PACMAN
-Pacman::Pacman(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map, UI* _ui) :
-	map(_map),
-	 ui(_ui)
+Pacman::Pacman(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map) :
+	map(_map)
 {
 	this->x = _x;
 	this->y = _y;
@@ -119,13 +117,19 @@ void Pacman::Move() {
 		break;
 	}
 
-	if (map->at(y).at(x) == SNACK_TILE) {
-		ui->addScore(1);
-		(*map)[y][x] = PATH_TILE;           // ← remove dot
-		ui->setMap(*map);
-	}
-
 	// Try to rotate to the last failed rotation for easier movement
 	if (recentRotateAttempt != NONE) 
 		ChangeMovement(recentRotateAttempt);
+}
+
+EatType Pacman::eatSnack() const {
+	const int tile = map->at(y).at(x);
+
+	if (tile == SNACK_TILE)
+		return EatType::SNACK;
+
+	if (tile == BIG_SNACK_TILE)
+		return EatType::BIG_SNACK;
+
+	return EatType::HUNGRY;
 }

@@ -1,5 +1,3 @@
-
-
 #include "Ghost.h"
 #include "GameObjectStruct.hpp"
 #include <vector>
@@ -7,16 +5,46 @@
 #include <iostream>
 #include <random>
 
-// Initialize function for PACMAN
+// Initialize function for ghost
 Ghost::Ghost(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map, UI* _ui) :
 	map(_map),
 	 ui(_ui)
 {
 	this->x = _x;
 	this->y = _y;
+	this->originalType = _type;
 	this->type = _type;
 	this->dir = _direction;
 }
+
+// Function to change the state of the ghost
+void Ghost::setState(GhostState newState) {
+	this->state = newState;
+
+	switch (newState) {
+	case GhostState::MOVING:
+		moveTickSpeed = 1;
+		type = originalType;
+		break;
+	case GhostState::RUNNING:
+		moveTickSpeed = 2;
+		scaredTickCounter = 0;
+		type = SCARED;
+		break;
+	case GhostState::EATEN:
+
+		type = originalType;
+		// Reset position to the center of the map, which is the ghost house
+		const int firstXPosition = floor(map->front().size() / 2.0) - 2;
+		const int ghostYPosition = floor(map->size() / 2.0);
+		x = firstXPosition + 1; // We can just put it one of the positions in the ghost house
+		y = ghostYPosition;
+		// Now wait a bit
+		moveTickSpeed = 20;
+		break;
+	}
+}
+
 
 // Private function variant of the one with direction for easy check for its own direction
 int Ghost::GetNextTile() {
@@ -130,6 +158,27 @@ void Ghost::ChangeMovement() {
 /// </summary>
 void Ghost::Move() {
 
+	// Check if we should move the ghost (not slow mode)
+	if (moveTickCounter < moveTickSpeed) {
+		moveTickCounter++;
+		return;
+	}
+	else {
+		moveTickCounter = 0;
+	}
+
+	if (state == GhostState::RUNNING) {
+		scaredTickCounter++;
+		if (scaredTickCounter > 30) { // After a while, change back to normal
+			setState(GhostState::MOVING);
+			scaredTickCounter = 0;
+		}
+	}
+
+	if (state == GhostState::EATEN) {
+		setState(GhostState::MOVING);
+	}
+
 	// Teleporting requires the knowledge of the edges of x
 	const int maxX = map->begin()->size();
 
@@ -137,7 +186,7 @@ void Ghost::Move() {
 
 	int nexTile = GetNextTile();
 
-	// Moving Pacman is dependend on its direction
+	// Moving Ghost is dependend on its direction
 	switch (this->dir) {
 	case LEFT:
 		if (nexTile == MAP_EDGE) // These checks only have to be done at the x directions, since they only have teleporting options

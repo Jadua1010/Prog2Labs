@@ -47,8 +47,12 @@ class UI
     /// Setter for the lives.
     /// @param lives lives
     void setLives(int lives);
+    void addLives(int lives);
 
     void setMap(std::vector<std::vector<int>> newMap);
+
+    /// Pacman lives.
+    int lives = 3;
 
     /// Update the screen
     /// - Draw the background
@@ -86,12 +90,8 @@ class UI
     /// \return the loaded texture, or nullptr if something went wrong.
     SDL_Texture *loadTexture(const std::string &file);
 
-  private:
     /// Total score.
     int score = 0;
-
-    /// Pacman lives.
-    int lives = 3;
 
     /// Main game UI window.
     SDL_Window *window;

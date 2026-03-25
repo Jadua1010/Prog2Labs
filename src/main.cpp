@@ -14,6 +14,27 @@
 
 std::vector<Ghost*> GhostPtrs;
 
+constexpr int RESET_WALL_TICKS = 16;
+int last_pac_x = 0;
+int last_pac_y = 0;
+
+void FillMapWithWalls(std::vector<std::vector<int>>& map)
+{
+    for (auto& row : map) {
+        for (int& tile : row) {
+            tile = WALL_TILE;
+        }
+    }
+}
+
+struct GameState {
+    Pacman* pacman;
+    UI* ui;
+    std::vector<std::vector<int>>* map;
+    const std::vector<std::vector<int>>* originalMap;
+    int resetWallTicksRemaining = 0;
+};
+
 /// Callback function to update the game state.
 ///
 /// This function is called by an SDL timer at regular intervals.
@@ -22,16 +43,99 @@ std::vector<Ghost*> GhostPtrs;
 /// should use mutexes to access shared data.
 /// Read the documentation of SDL_AddTimer for more information and for tips
 /// regarding multithreading issues.
+
 Uint32 gameUpdate(Uint32 interval, void* param)
 {
     // Do game loop update here
 
     // Automatically set a step each gametick if its not a wall (and do at map edges)
-    Pacman* pacman = static_cast<Pacman*>(param);
+    GameState* gameState = static_cast<GameState*>(param);
+    Pacman* pacman = gameState->pacman;
+
+    // During reset animation, keep walls up for a few ticks and then restore board.def map.
+    if (gameState->resetWallTicksRemaining > 0) {
+        gameState->resetWallTicksRemaining--;
+        if (gameState->resetWallTicksRemaining == 0) {
+            *gameState->map = *gameState->originalMap;
+            gameState->ui->setMap(*gameState->map);
+
+            for (Ghost* ghost : GhostPtrs) {
+                ghost->setState(GhostState::MOVING);
+            }
+        }
+        return interval;
+    }
+
+    // Store last x and y (we need this for collision detection)
+    last_pac_x = pacman->x;
+    last_pac_y = pacman->y;
     pacman->Move();
 
-    for (Ghost* ghost : GhostPtrs)
-        ghost->Move();
+    // When pacmans calls that its eaten a sneck.
+    const EatType eaten = pacman->eatSnack();
+    if (eaten != EatType::HUNGRY) {
+        int scoreToAdd = 0;
+        if (eaten == EatType::SNACK) {
+            scoreToAdd = 10;
+        }
+        if (eaten == EatType::FRUIT) {
+            scoreToAdd = 100;
+        }
+        else if (eaten == EatType::BIG_SNACK) {
+            scoreToAdd = 50;
+            for (Ghost* ghost : GhostPtrs) {
+                ghost->setState(GhostState::RUNNING);
+            }
+        }
+
+        gameState->ui->addScore(scoreToAdd);
+        (*gameState->map)[pacman->y][pacman->x] = PATH_TILE;
+        gameState->ui->setMap(*gameState->map);
+    }
+
+    bool pacmanEaten = false;
+    for (Ghost* ghost : GhostPtrs) {
+        // While we are at it, we can check if the ghost has now collided with a pacman
+
+        // Check if the ghost is/is going to be in the same tile as pacmans
+        if (ghost->x == pacman->x && ghost->y == pacman->y || (ghost->x == last_pac_x && ghost->y == last_pac_y)) {
+            if (ghost->state == GhostState::RUNNING) {
+                ghost->setState(GhostState::EATEN);
+                gameState->ui->addScore(200); // Add score for eating a ghost
+            }
+            else if (ghost->state == GhostState::MOVING) {
+                gameState->ui->addLives(-1); // Lose a life
+
+                // Reset character positions.
+                pacman->x = 1;
+                pacman->y = 1;
+                for (Ghost* resetGhost : GhostPtrs) {
+                    // Basically works as a reset state
+                    resetGhost->setState(GhostState::EATEN);
+                }
+
+                // Reset the score and lives if we dead
+                if (gameState->ui->lives <= 0) {
+                    gameState->ui->setScore(0);
+                    gameState->ui->setLives(3);
+                    // Fill map with walls to make it look very much like we ded
+                    FillMapWithWalls(*gameState->map);
+                    gameState->ui->setMap(*gameState->map);
+                    // Wait for some ticks until we actually reset the map
+                    gameState->resetWallTicksRemaining = RESET_WALL_TICKS;
+                }
+                pacmanEaten = true;
+                break;
+            }
+        }
+        else {
+            ghost->Move();
+        }
+    }
+
+    if (pacmanEaten) {
+        return interval;
+    }
 
     return interval;
 }
@@ -44,6 +148,7 @@ int main(int /*argc*/, char** /*argv*/)
     std::vector<std::vector<int>> map = { {
         #include "board.def"
     } };
+    const std::vector<std::vector<int>> originalMap = map;
 
     // Create a new ui object
     UI ui(map); // <-- use map from your game objects.
@@ -55,7 +160,9 @@ int main(int /*argc*/, char** /*argv*/)
     ui.setLives(3); // <-- Pass correct value to the setter
 
     // Init a Pacman
-    Pacman pacman(1, 1, PACMAN, UP, &map, &ui);
+    Pacman pacman(1, 1, PACMAN, UP, &map);
+    GameState gameState = { &pacman, &ui, &map, &originalMap, 0 };
+
 
     // Init the ghosts and get their positions relative to the map size
     const int firstXPosition = floor(map.front().size() / 2.0) - 2;
@@ -77,7 +184,7 @@ int main(int /*argc*/, char** /*argv*/)
 
     // Start timer for game update, call this function every 150 ms. with the objects pointer
     SDL_TimerID timer_id =
-        SDL_AddTimer(150, gameUpdate, &pacman);
+        SDL_AddTimer(150, gameUpdate, &gameState);
 
 
     // Call game init code here

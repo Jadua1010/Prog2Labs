@@ -93,6 +93,9 @@ void UI::addScore(int points) { this->score += points; }
 
 void UI::setLives(int lives) { this->lives = lives; }
 
+void UI::addLives(int hearts) { this->lives += hearts; }
+
+
 /// Initialises the UI::window and the UI::renderer.
 void UI::init()
 {
