@@ -246,6 +246,38 @@ void UI::loadMaps()
     }
 }
 
+// UI.cpp
+void UI::spawnFruit(std::vector<std::vector<int>>& map) {
+    // Keep at most one fruit tile active.
+    for (size_t i = 0; i < map.size(); i++) {
+        for (size_t j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == FRUIT_TILE) {
+                map[i][j] = PATH_TILE;
+            }
+        }
+    }
+
+    // Spawn on PATH_TILE only, as requested.
+    std::vector<std::pair<int, int>> pathPositions;
+    for (size_t i = 0; i < map.size(); i++) {
+        for (size_t j = 0; j < map[i].size(); j++) {
+            if (map[i][j] == PATH_TILE) {
+                pathPositions.emplace_back(static_cast<int>(i), static_cast<int>(j));
+            }
+        }
+    }
+
+    if (pathPositions.empty()) {
+        return;
+    }
+
+    int randomIndex = std::rand() % static_cast<int>(pathPositions.size());
+    int x = pathPositions[randomIndex].second;
+    int y = pathPositions[randomIndex].first;
+
+    map[y][x] = FRUIT_TILE;
+}
+
 void UI::drawBackground(std::vector<std::vector<int>> &map)
 {
     // Draw a wall on each position containing a one
@@ -268,6 +300,12 @@ void UI::drawBackground(std::vector<std::vector<int>> &map)
                                 static_cast<int>(i) * TILESIZE, TILESIZE,
                                 TILESIZE};
                 SDL_RenderCopy(renderer, sheet, &clips[ENERGIZER][DOWN], &dst);
+            }
+            if (map[i][j] == 3) {
+                SDL_Rect dst = {static_cast<int>(j) * TILESIZE,
+                                static_cast<int>(i) * TILESIZE, TILESIZE,
+                                TILESIZE};
+                SDL_RenderCopy(renderer, sheet, &clips[CHERRY][DOWN], &dst);
             }
         }
     }

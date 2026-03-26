@@ -11,10 +11,12 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <utility>
 
 std::vector<Ghost*> GhostPtrs;
 
 constexpr int RESET_WALL_TICKS = 16;
+constexpr int FRUIT_SPAWN_TICKS = 300;
 int last_pac_x = 0;
 int last_pac_y = 0;
 
@@ -33,6 +35,7 @@ struct GameState {
     std::vector<std::vector<int>>* map;
     const std::vector<std::vector<int>>* originalMap;
     int resetWallTicksRemaining = 0;
+    int ticksUntilFruitSpawn = FRUIT_SPAWN_TICKS;
 };
 
 /// Callback function to update the game state.
@@ -58,12 +61,20 @@ Uint32 gameUpdate(Uint32 interval, void* param)
         if (gameState->resetWallTicksRemaining == 0) {
             *gameState->map = *gameState->originalMap;
             gameState->ui->setMap(*gameState->map);
+            gameState->ticksUntilFruitSpawn = FRUIT_SPAWN_TICKS;
 
             for (Ghost* ghost : GhostPtrs) {
                 ghost->setState(GhostState::MOVING);
             }
         }
         return interval;
+    }
+
+    gameState->ticksUntilFruitSpawn--;
+    if (gameState->ticksUntilFruitSpawn <= 0) {
+        // Spawn a fruit and reset the counter
+        gameState->ui->spawnFruit(*gameState->map); // You can change the fruit type as needed
+        gameState->ticksUntilFruitSpawn = FRUIT_SPAWN_TICKS;
     }
 
     // Store last x and y (we need this for collision detection)
@@ -161,7 +172,7 @@ int main(int /*argc*/, char** /*argv*/)
 
     // Init a Pacman
     Pacman pacman(1, 1, PACMAN, UP, &map);
-    GameState gameState = { &pacman, &ui, &map, &originalMap, 0 };
+    GameState gameState = { &pacman, &ui, &map, &originalMap, 0, FRUIT_SPAWN_TICKS };
 
 
     // Init the ghosts and get their positions relative to the map size

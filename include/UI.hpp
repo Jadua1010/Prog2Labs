@@ -51,6 +51,9 @@ class UI
 
     void setMap(std::vector<std::vector<int>> newMap);
 
+    // Spawns fruit on map
+    void spawnFruit(std::vector<std::vector<int>>& map);
+
     /// Pacman lives.
     int lives = 3;
 

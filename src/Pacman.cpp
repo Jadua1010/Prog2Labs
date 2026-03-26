@@ -131,5 +131,8 @@ EatType Pacman::eatSnack() const {
 	if (tile == BIG_SNACK_TILE)
 		return EatType::BIG_SNACK;
 
+	if (tile == FRUIT_TILE)
+		return EatType::FRUIT;
+
 	return EatType::HUNGRY;
 }
