@@ -13,6 +13,7 @@
 #include <random>
 #include <utility>
 
+// Pointers to be used in the game updates, initialized in the Main code.
 std::vector<Ghost*> GhostPtrs;
 
 constexpr int RESET_WALL_TICKS = 16;
@@ -20,6 +21,10 @@ constexpr int FRUIT_SPAWN_TICKS = 300;
 int last_pac_x = 0;
 int last_pac_y = 0;
 
+/// <summary>
+/// Function to initialize Map. Walls are colored wrong and this corrects that mistake
+/// </summary>
+/// <param name="map">The map as vectors of vectors of ints</param>
 void FillMapWithWalls(std::vector<std::vector<int>>& map)
 {
     for (auto& row : map) {
@@ -29,6 +34,7 @@ void FillMapWithWalls(std::vector<std::vector<int>>& map)
     }
 }
 
+// A struct to organise the pointers, could also has been done like GhostPtrs
 struct GameState {
     Pacman* pacman;
     UI* ui;
@@ -67,6 +73,7 @@ Uint32 gameUpdate(Uint32 interval, void* param)
                 ghost->setState(GhostState::MOVING);
             }
         }
+        
         return interval;
     }
 
@@ -154,8 +161,11 @@ Uint32 gameUpdate(Uint32 interval, void* param)
 /// Program entry point.
 int main(int /*argc*/, char** /*argv*/)
 {
+
+    // Initialize Random with the time
     std::srand(time(NULL));
 
+    // Init the map
     std::vector<std::vector<int>> map = { {
         #include "board.def"
     } };
@@ -237,6 +247,7 @@ int main(int /*argc*/, char** /*argv*/)
         }
 
         // Render the scene
+
         std::vector<GameObjectStruct> objects = { pacman, inky, pinky, blinky, clyde };
 
         // game->getStructs())

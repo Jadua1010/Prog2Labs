@@ -5,6 +5,8 @@
 #include <iostream>
 #include <random>
 
+
+
 // Initialize function for ghost
 Ghost::Ghost(int _x, int _y, Type _type, Direction _direction, std::vector<std::vector<int>>* _map, UI* _ui) :
 	map(_map),
@@ -46,20 +48,24 @@ void Ghost::setState(GhostState newState) {
 }
 
 
-// Private function variant of the one with direction for easy check for its own direction
+/// <summary>
+/// Private function variant of the one with direction for easy check for its own direction
+/// </summary>
+/// <returns>The tile type as an int. Can be casted to TileType</returns>
 int Ghost::GetNextTile() {
 	return Ghost::GetNextTile(this->dir);
 }
 
 // Private function purely to simplify wall detection for other functions
 int Ghost::GetNextTile(Direction direction) {
+
+	// Get the baseline of the map and the value
 	int value = 0;
 	const int maxY = map->size();
 	const int maxX = map->begin()->size();
 
-	/*std::cout << "Max x: " << maxX << "     Max y: " << maxY << "\n";
-	std::cout << "current x: " << x << "     current y: " << y << "\n";*/
 
+	// Dependend on the direction, check the neighbouring tile and return its type. Also check for wall edges (portals)
 	switch (direction) {
 	case LEFT:
 		if (x == 0)
@@ -98,6 +104,7 @@ void Ghost::ChangeMovement() {
 	
 	int oppositeDirection;
 
+	// Preferably, don't move backwards. So check what side is their back
 	switch (dir) {
 	case LEFT:
 		oppositeDirection = RIGHT;
@@ -114,9 +121,10 @@ void Ghost::ChangeMovement() {
 
 	}
 
-
+	// There could be upto 4 tiles that the ghost can move to if there is no wall
 	int tiles[4];
 
+	// Dependend on possible routes, different choises must be made
 	int possibilities = 0;
 
 	for (int i = 0; i < 4; i++) {
@@ -126,7 +134,7 @@ void Ghost::ChangeMovement() {
 			possibilities++;
 	}
 
-	// Only one is possible, so it must move to there
+	// Only one is possible (going backwards), so it must move to there
 	if (possibilities == 0) {
 		for (int i = 0; i < 4; i++) {
 			if (tiles[i] != WALL_TILE) {
@@ -135,13 +143,14 @@ void Ghost::ChangeMovement() {
 			}
 		}
 	}
-
+	// Let a random path be chosen dependend on the possible dirctions. Then every valid direction do -1 and only at 0, it is the chosen path
 	int pathNumber = std::rand() % possibilities;
 
 	for (int i = 0; i < 4; i++) {
 		if (tiles[i] == WALL_TILE || oppositeDirection == i)
 			continue;
 
+		// Chosen path? make it the direction
 		if (pathNumber == 0) {
 			dir = (Direction)i;
 			return;

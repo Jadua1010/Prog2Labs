@@ -122,6 +122,10 @@ void Pacman::Move() {
 		ChangeMovement(recentRotateAttempt);
 }
 
+/// <summary>
+/// check if pacman is standing on a snack, then update the game with its snack to be eaten and gain points
+/// </summary>
+/// <returns>The type of snack</returns>
 EatType Pacman::eatSnack() const {
 	const int tile = map->at(y).at(x);
 
